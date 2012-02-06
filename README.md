@@ -1,3 +1,0 @@
-Dependencies:
-
-* libevent: installationl
