@@ -1,24 +1,30 @@
-.PHONY: clean build all
+.PHONY: clean build all test
 
-CLIENT_OBJECTS=client.cpp
-SERVER_OBJECTS=server.cpp $(BIN)/gateway.o
-NONBLOCK_OBJECTS=nonblock.cpp
-CXXFLAGS=-levent
 BIN=bin
+# SERVER_OBJECTS=server.cpp $(BIN)/gateway.o 
+EVA_OBJECTS=eva.cpp $(BIN)/request.o $(BIN)/content_loader.o \
+			$(BIN)/socket_util.o $(BIN)/evhttp_server.o $(BIN)/evhttp_client.o
+TEST_OBJECTS=test.cpp $(BIN)/request.o
+CPPFLAGS=-g
+CXXFLAGS=-levent
+CXXFLAGS+=-lboost_filesystem -lboost_system
 
-all: $(BIN)/client.e $(BIN)/server.e $(BIN)/nonblock.e
+all: $(BIN)/eva.e $(BIN)/test.e
 
 clean:
 	rm -rf $(BIN)/*.e $(BIN)/*.o
+test:
+	make $(BIN)/test.e
+	$(BIN)/test.e
+run:
+	make $(BIN)/eva.e
+	$(BIN)/eva.e
 
-$(BIN)/nonblock.e: $(NONBLOCK_OBJECTS)
+$(BIN)/test.e: $(TEST_OBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ 
-$(BIN)/server.e: $(SERVER_OBJECTS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ 
-
-$(BIN)/client.e: $(CLIENT_OBJECTS)
+$(BIN)/eva.e: $(EVA_OBJECTS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ 
 
 $(BIN)/%.o: %.cpp %.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CPPFLAGS) -c -o $@ $<
 
