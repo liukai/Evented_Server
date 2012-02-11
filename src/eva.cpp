@@ -1,8 +1,9 @@
-#include "evhttp_server.h"
+#include "server.h"
+#include "log.h"
 
 int main(int argc, char **argv)
 {
-    // TODO: the port number
+    init_debugger();
     HttpServer server(8080);
     return server.run();
 }

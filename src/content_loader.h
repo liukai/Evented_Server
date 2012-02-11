@@ -3,7 +3,7 @@
 
 class ContentLoader {
 public:
-    ContentLoader(int fd): fd(fd), auto_close(false) { }
+    ContentLoader(int fd, bool auto_close = false): fd(fd), auto_close(auto_close) { }
     ContentLoader(const char* filename);
     ~ContentLoader();
 

@@ -38,7 +38,8 @@ int open_socket(int port) {
         return -1;
     }
 
-    if (listen(socketlisten, 5) < 0)
+    // TODO: backlog size
+    if (listen(socketlisten, 500) < 0)
     {
         fprintf(stderr,"Failed to listen to socket");
         return -1;

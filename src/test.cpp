@@ -80,7 +80,7 @@ void test_fork() {
 }
 
 int main(int argc, char** argv) {
-    test_fork();
+    // test_fork();
     test_parse_request();    
     return 0;
 }

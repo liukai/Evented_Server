@@ -2,14 +2,19 @@
 #include <unistd.h>
 #include "content_loader.h"
 
+#include <iostream>
+using namespace std;
+
 ContentLoader::ContentLoader(const char* filename): auto_close(true) {
     // What if error occurs
     fd = open(filename, O_RDONLY);
 }
 
 ContentLoader::~ContentLoader() {
-    if (auto_close && is_valid())
+    if (auto_close && is_valid()) {
+        cout<<"ContentLoader: closing"<<endl;
         close(fd);
+    }
 }
 bool ContentLoader::can_read() const {
     return fcntl(fd, F_SETFL) != -1;
