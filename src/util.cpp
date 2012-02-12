@@ -13,7 +13,7 @@ int set_nonblock(int fd)
 
     flags = fcntl(fd, F_GETFL);
     flags |= O_NONBLOCK;
-    fcntl(fd, F_SETFL, flags);
+    return fcntl(fd, F_SETFL, flags);
 }
 
 int open_socket(int port) {

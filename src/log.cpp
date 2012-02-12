@@ -1,8 +1,6 @@
-
 #include "log.h"
-#include "log4cxx/logger.h"
-#include "log4cxx/basicconfigurator.h"
-#include "log4cxx/helpers/exception.h"
+
+/*
 using namespace log4cxx;
 using namespace log4cxx::helpers;
 
@@ -17,5 +15,7 @@ void info(const char* message) { LOG4CXX_INFO(innerLogger, message); }
 void warn(const char* message) { LOG4CXX_WARN(innerLogger, message); }
 void error(const char* message) { LOG4CXX_WARN(innerLogger, message); };
 void fatal(const char* message) { LOG4CXX_FATAL(innerLogger, message); }
+*/
 
 std::ostream& log = std::cout;
+std::ostream& err = std::cerr;

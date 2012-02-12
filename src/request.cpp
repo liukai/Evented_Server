@@ -39,12 +39,10 @@ bool parse_request(const char* request, int size, Request* pReq) {
     return true;
 }
 
-bool parse_url(const char* request, int size, boost::filesystem::path* pPath) {
+bool parse_url(const char* request, int size,
+               boost::filesystem::path* pPath, std::string* pQuery) {
     const char* GET_REQUEST = "GET ";
 
-    // TODO: lower case also counts
-    // should also trim the string first
-    const char* NONE = 0;
     if (!equal(GET_REQUEST, GET_REQUEST + strlen(GET_REQUEST), request)) 
         return false;
 
@@ -62,6 +60,13 @@ bool parse_url(const char* request, int size, boost::filesystem::path* pPath) {
         return false;
     }
 
-    pPath->assign(begin, end);
+    const char* delim = find(begin, end, '?');
+    pPath->assign(begin, delim);
+    if (delim == end) {
+        pQuery->assign(delim, end); // set to empty
+    } else {
+        pQuery->assign(delim + 1, end);
+    }
+
     return true;
 }

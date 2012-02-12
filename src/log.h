@@ -12,5 +12,6 @@ void error(const char* message);
 void fatal(const char* message);
 
 extern std::ostream& log;
+extern std::ostream& err;
 
 #endif

@@ -12,6 +12,7 @@ struct Request {
 };
 
 bool parse_request(const char* request, int size, Request* pReq);
-bool parse_url(const char* request, int size, boost::filesystem::path* pPath);
+bool parse_url(const char* request, int size, 
+               boost::filesystem::path* pPath, std::string* pQuery);
 
 #endif

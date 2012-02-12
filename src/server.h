@@ -10,13 +10,14 @@ class HttpServer {
 public:
     enum ErrorCode { OK = 0, CLIENT_ACCEPT_FAIL, SERVER_INITIAL_FAIL};
 
-    HttpServer(int port): port(port) { }
+    HttpServer(int port, bool isCgi = true): port(port), isCgi(isCgi) { }
+    ~HttpServer();
     ErrorCode run();
 
+    static Config* config;
 private:
     // --- Utilities
-    static void report_error(ErrorCode error_code);
-    static void ready_close_callback(int fd, short ev, void *arg);
+    static void close_parent_fd(int fd, short ev, void *arg);
     void run_event_loop(int fd);
 
     // --- Callbacks
@@ -26,11 +27,9 @@ private:
     static void client_error_callback(bufferevent *incoming, short what, void *arg);
 
     // --- Data
-    static const char CONTENT_DIR[];
-    static Config config;
     int port;
     int socket_fd;
+    bool isCgi;
 };
 
 #endif
-

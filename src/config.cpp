@@ -11,10 +11,10 @@ Config::Config(const char* filename) {
     ptree tree;
     ini_parser::read_ini(filename, tree);
 
-    string static_files_text = tree.get<std::string>("resource.static");
+    string static_files_text = tree.get<std::string>("static.types");
     load_files(static_files, static_files_text);
-    string dynamic_files_text = tree.get<std::string>("resource.dynamic");
-    load_files(dynamic_files, dynamic_files_text);
+    string dynamic_files_text = tree.get<std::string>("cgi.types");
+    load_files(cgi_files, dynamic_files_text);
 }
 
 void Config::load_files(set<std::string>& file_set,
@@ -31,7 +31,7 @@ void Config::load_files(set<std::string>& file_set,
 }
 
 ResourceType Config::get_file_type(const char* resource_begin,
-                                   const char* resource_end) {
+                                   const char* resource_end) const {
     typedef reverse_iterator<const char*> RIter;
     const char* revPos = find(RIter(resource_end), 
                                     RIter(resource_begin),
@@ -42,6 +42,6 @@ ResourceType Config::get_file_type(const char* resource_begin,
     }
     string type(revPos, resource_end);
     return static_files.find(type) != static_files.end() ? STATIC :
-           dynamic_files.find(type) != dynamic_files.end() ? DYNAMIC:
+           cgi_files.find(type) != cgi_files.end() ? CGI:
            INVALID;
 }
