@@ -7,6 +7,8 @@
 using namespace boost::property_tree;
 using namespace std;
 
+const char* Config::DEFAULT_TYPE = "text/plain";
+
 Config::Config(const char* filename) {
     ptree tree;
     ini_parser::read_ini(filename, tree);
@@ -15,6 +17,13 @@ Config::Config(const char* filename) {
     load_files(static_files, static_files_text);
     string dynamic_files_text = tree.get<std::string>("cgi.types");
     load_files(cgi_files, dynamic_files_text);
+
+    for (set<string>::const_iterator pos = static_files.begin();
+         pos != static_files.end(); ++pos) {
+        const string& type = *pos;
+        string response_type = tree.get<std::string>("static." + type);
+        return_types[type] = response_type;
+    }
 }
 
 void Config::load_files(set<std::string>& file_set,
@@ -31,7 +40,7 @@ void Config::load_files(set<std::string>& file_set,
 }
 
 ResourceType Config::get_file_type(const char* resource_begin,
-                                   const char* resource_end) const {
+                                   const char* resource_end, string& type) const {
     typedef reverse_iterator<const char*> RIter;
     const char* revPos = find(RIter(resource_end), 
                                     RIter(resource_begin),
@@ -40,8 +49,14 @@ ResourceType Config::get_file_type(const char* resource_begin,
     if (revPos == resource_begin) {
         return INVALID;
     }
-    string type(revPos, resource_end);
+    type.assign(revPos, resource_end);
     return static_files.find(type) != static_files.end() ? STATIC :
            cgi_files.find(type) != cgi_files.end() ? CGI:
            INVALID;
+}
+const char* Config::get_result_type(const char* type) const {
+    map<string, string>::const_iterator pos = return_types.find(type);
+    if (pos == return_types.end())
+        return DEFAULT_TYPE;
+    return pos->second.c_str();
 }

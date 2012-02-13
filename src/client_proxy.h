@@ -15,7 +15,8 @@ public:
     virtual ~ClientProxy();
 
     void set_event_buffer(bufferevent* buf) { buf_event = buf; }
-    bool load_resource(const char* resource, const char* query, bool is_static);
+    bool load_resource(const char* resource, const char* query, 
+                       const char* type, bool is_static);
     void bad_request(ReturnCode reason);
     void ready_to_close() { finished = true; }
     bool can_close() const { return finished; }
@@ -23,7 +24,7 @@ public:
     virtual const char* get_directory() const = 0;
 
     // -- HTTP
-    void http_statue_line(ReturnCode code); 
+    void http_statue_line(ReturnCode code, const char* type); 
     void http_data(const char* response, int size);
     void http_close(const char* response, int size);
 protected:
@@ -31,6 +32,7 @@ protected:
     virtual bool load_dynamic_content(const char*  resource, const char* query) = 0;
 
     int client_fd;
+    const char* filetype;
 
 private:
     // -- Callbacks

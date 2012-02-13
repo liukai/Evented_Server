@@ -118,17 +118,21 @@ void HttpServer::client_read_callback(bufferevent *incoming, void *arg)
 
     const char* path_str = final_path.c_str();
     size_t size = strlen(path_str);
-    ResourceType type = config->get_file_type(path_str, path_str + size);
+    string ext;
+    ResourceType type = config->get_file_type(path_str, path_str + size, ext);
 
     if (type == INVALID) {
         client->bad_request(REQUEST_DENIED);
         return;
     }
 
-    if (!client->load_resource(final_path.c_str(), query.c_str(), type == STATIC)) {
+    const char* return_type = config->get_result_type(ext.c_str());
+    if (!client->load_resource(final_path.c_str(), query.c_str(),
+                               return_type, type == STATIC)) {
         client->bad_request(REQUEST_DENIED);
     }
     if (client->can_close()) {
+        log<<"Delete client at read"<<endl;
         delete client;
     }
     free(header);

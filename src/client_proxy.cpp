@@ -1,4 +1,5 @@
 #include "client_proxy.h"
+#include "config.h"
 #include "log.h"
 #include "util.h"
 #include <cassert>
@@ -25,14 +26,16 @@ ClientProxy::~ClientProxy() {
 }
 void ClientProxy::bad_request(ReturnCode reason) {
     log<<"bad request: "<<reason<<endl;
-    http_statue_line(reason);
+    http_statue_line(reason, Config::DEFAULT_TYPE);
 
     const char REASON[] = "Bad Request!";
     int SIZE = (int)sizeof(REASON) - 1;
     http_close(REASON, SIZE);
 }
 
-bool ClientProxy::load_resource(const char* resource, const char* query, bool is_static) {
+bool ClientProxy::load_resource(const char* resource, const char* query, 
+                                const char* type, bool is_static) {
+    filetype = type;
     return is_static ? load_static_content(resource) : load_dynamic_content(resource, query);
 }
 
@@ -54,10 +57,10 @@ void ClientProxy::http_data(const char* response, int size) {
     bufferevent_write_buffer(buf_event, evreturn);
     evbuffer_free(evreturn);
 }
-void ClientProxy::http_statue_line(ReturnCode code) {
+void ClientProxy::http_statue_line(ReturnCode code, const char* type) {
     evbuffer *evreturn = evbuffer_new();
     evbuffer_add_printf(evreturn, "HTTP/1.0 %d OK\n", (int)code);
-    evbuffer_add_printf(evreturn, "CONTENT-TYPE: text/plain\n\n");
+    evbuffer_add_printf(evreturn, "CONTENT-TYPE: %s\n\n", type);
     bufferevent_write_buffer(buf_event, evreturn);
     evbuffer_free(evreturn);
 }
@@ -74,7 +77,7 @@ void ClientProxy::file_write_callback(int disk_fd, short ev, void *arg) {
 
     char buffer[FILE_BUFFER_SIZE];
     if (client->first_time) {
-        client->http_statue_line(SUCCESS);
+        client->http_statue_line(SUCCESS, client->filetype);
         client->first_time = false;
     }
 
