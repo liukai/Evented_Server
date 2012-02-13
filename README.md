@@ -30,10 +30,8 @@ I used the httperf to evaluate the performance. In the evaluation I use 200 conn
 The content of requested dynamic page are the same, each page is 102 KB.
 
 Here is the performance evaluation("I" is improved server and "B" is baseline server):
-```
 
             Error rate(B)   Error rate(I)     Net I/O(B)        Net I/O(I)
-
 10 req/s        0.0             0.0           216.5 KB/s        207.2   KB/s
 
 20 req/s        0.0             0.0           433.2 KB/s        413.8   KB/s
@@ -54,7 +52,6 @@ Here is the performance evaluation("I" is improved server and "B" is baseline se
 
 100 req/s       100.0           42.0          4.1   KB/s        413.8   KB/s
 
-```
 
 As we can see in this figure, with smaller request amount, the baseline server has even slightly better performance. However as request rate increases its performance decays rapidly.
 
