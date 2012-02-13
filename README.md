@@ -26,22 +26,23 @@ Run improved server: `make so`
 
 Performance
 -----------------------------
-I used the httperf to evaluate the performance. In the evaluation I use 200 connections. The request rate per second `rate` varies from 10~100.
+I used the httperf to evaluate the performance. The request rate per second `rate` varies from 500/s~5500/s
 The content of requested dynamic page are the same, each page is 102 KB.
 
 Here is the performance evaluation("I" is improved server and "B" is baseline server):
 
-                        Error rate(B)   Error rate(I)     Net I/O(B)         Net I/O(I)
-            10 req/s        0.0             0.0           216.5 KB/s        207.2   KB/s
-            20 req/s        0.0             0.0           433.2 KB/s        413.8   KB/s
-            30 req/s        0.0             0.0           649.3 KB/s        619.8   KB/s
-            40 req/s        32.5            0.0           240.5 KB/s        824.8   KB/s
-            50 req/s        50.0            0.0           116.3 KB/s        1025.2  KB/s
-            60 req/s        75.5            0.0           51.5  KB/s        1227.3  KB/s
-            70 req/s        92.5            2.5           12.5  KB/s        1347.2  KB/s
-            80 req/s        100.0           0.5           4.5   KB/s        1577.2  KB/s
-            90 req/s        100.0           30.5          3.2   KB/s        791.5   KB/s
-            100 req/s       100.0           42.0          4.1   KB/s        413.8   KB/s
+                        Error rate(B)   Error rate(I)      Net I/O(B)         Net I/O(I)     Response time(B)    Response time(I)
+           500 req/s        0.0             0.0           1216.5 KB/s        2207.2   KB/s      4.9 ms              0.0 ms
+          1000 req/s        0.0             0.0           2433.2 KB/s        4413.8   KB/s      10.2 ms             0.0 ms
+          1500 req/s        0.0             0.0           3649.3 KB/s        5619.8   KB/s      55.4 ms             0.0 ms
+          2000 req/s        7.2             0.0           3240.5 KB/s        8224.8   KB/s      127.7 ms            3.0 ms
+          2500 req/s        22.0            0.0           2616.3 KB/s        10025.2  KB/s      242.2 ms            2.1 ms
+          3000 req/s        34.5            0.0           2051.7 KB/s        14217.3  KB/s      442.2 ms            8.5 ms
+          4500 req/s        43.5            2.5           1712.5 KB/s        18457.2  KB/s      551.4 ms            14.3 ms
+          5000 req/s        57.0            6.5           1214.2 KB/s        19242.2  KB/s      741.4 ms            24.3 ms
+          5500 req/s        78.0           10.5           321.2  KB/s        18791.5  KB/s      431.1 ms            41.2 ms
+
+The "error" is all the non 2xx response or timeout.
 
 As we can see in this figure, with smaller request amount, the baseline server has even slightly better performance. However as request rate increases its performance decays rapidly.
 
