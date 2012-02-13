@@ -32,16 +32,27 @@ The content of requested dynamic page are the same, each page is 102 KB.
 Here is the performance evaluation("I" is improved server and "B" is baseline server):
 `
             Error rate(B)   Error rate(I)     Net I/O(B)        Net I/O(I)
+
 10 req/s        0.0             0.0           216.5 KB/s        207.2   KB/s
+
 20 req/s        0.0             0.0           433.2 KB/s        413.8   KB/s
+
 30 req/s        0.0             0.0           649.3 KB/s        619.8   KB/s
+
 40 req/s        32.5            0.0           240.5 KB/s        824.8   KB/s
+
 50 req/s        50.0            0.0           116.3 KB/s        1025.2  KB/s
+
 60 req/s        75.5            0.0           51.5  KB/s        1227.3  KB/s
+
 70 req/s        92.5            2.5           12.5  KB/s        1347.2  KB/s
+
 80 req/s        100.0           0.5           4.5   KB/s        1577.2  KB/s
+
 90 req/s        100.0           30.5          3.2   KB/s        791.5   KB/s
+
 100 req/s       100.0           42.0          4.1   KB/s        413.8   KB/s
+
 `
 
 As we can see in this figure, with smaller request amount, the baseline server has even slightly better performance. However as request rate increases its performance decays rapidly.
