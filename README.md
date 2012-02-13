@@ -32,9 +32,9 @@ The content of requested dynamic page are the same, each page is 102 KB.
 Here is the performance evaluation("I" is improved server and "B" is baseline server):
 
             Error rate(B)   Error rate(I)     Net I/O(B)        Net I/O(I)
-10 req/s        0.0             0.0           216.5 KB/s        207.2   KB/s
+            10 req/s        0.0             0.0           216.5 KB/s        207.2   KB/s
 
-20 req/s        0.0             0.0           433.2 KB/s        413.8   KB/s
+            20 req/s        0.0             0.0           433.2 KB/s        413.8   KB/s
 
 30 req/s        0.0             0.0           649.3 KB/s        619.8   KB/s
 
