@@ -1,4 +1,6 @@
 *.o
 *.e
 bin/
+cgi/
+cgi-bin/
 *.shtml
